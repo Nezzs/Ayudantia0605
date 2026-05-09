@@ -15,6 +15,15 @@ public class TareaRepository {
         return tareas;
     }
 
+    public Tarea findById(Long id){
+        for (Tarea t : tareas){
+            if (t.getId().equals(id)){
+                return t;
+            }
+        }
+        return null;
+    }
+
     public Tarea save(Tarea tarea){
         Long id = tareas.size() + 1L;
         tarea.setId(id);

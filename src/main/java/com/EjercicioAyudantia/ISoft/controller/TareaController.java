@@ -10,7 +10,10 @@ import com.EjercicioAyudantia.ISoft.dto.RequestTareaDTO;
 import com.EjercicioAyudantia.ISoft.model.Tarea;
 import com.EjercicioAyudantia.ISoft.service.PostTareaService;
 import com.EjercicioAyudantia.ISoft.service.GetTareaFilterService;
+import com.EjercicioAyudantia.ISoft.service.PatchTareaService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
@@ -23,10 +26,12 @@ public class TareaController {
 
     private final PostTareaService postTareaService;
     private final GetTareaFilterService getTareaFilterService;
+    private final PatchTareaService patchTareaService;
 
-    public TareaController(PostTareaService postTareaService, GetTareaFilterService getTareaFilterService) {
+    public TareaController(PostTareaService postTareaService, GetTareaFilterService getTareaFilterService, PatchTareaService patchTareaService) {
         this.postTareaService = postTareaService;
         this.getTareaFilterService = getTareaFilterService;
+        this.patchTareaService = patchTareaService;
     }
 
     @PostMapping()
@@ -42,6 +47,9 @@ public class TareaController {
             
             return ResponseEntity.ok(getTareaFilterService.getFilteredTasks(prioridad, fechaLimite, titulo));
     }
-}
 
-    
+    @PatchMapping("/{id}")
+    public ResponseEntity<Tarea> markTaskAsCompleted(@PathVariable Long id){
+        return ResponseEntity.ok(patchTareaService.updateStateTask(id));
+    }
+}
